@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url: 'https://api.smartcodehub.com/'
+  url: 'http://134.209.153.238:3666/'
 };
