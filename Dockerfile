@@ -7,13 +7,18 @@ FROM node:latest as build
 WORKDIR /usr/local/app
 
 # Add the source code to app
-COPY ./ /usr/local/app/
+COPY ./package.json .
 
 # Install all the dependencies
 RUN npm install
 
+COPY . .
+
+
 # Generate the build of the application
 RUN npm run build
+
+
 
 
 # Stage 2: Serve app with nginx server
