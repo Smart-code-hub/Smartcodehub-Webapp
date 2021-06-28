@@ -1,0 +1,72 @@
+<div class="container  ">
+  <div class="row justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-12 mt-5">
+      <h4 class="text-center p-2">Register</h4>
+
+      <mat-card>
+        <form autocomplete="off">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Name</label>
+            <input
+              type="text"
+              [(ngModel)]="user.name"
+              name="name"
+              class="form-control"
+              placeholder="Enter Name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input
+              type="email"
+              [(ngModel)]="user.email"
+              name="email"
+              class="form-control"
+              placeholder="Enter email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Phone</label>
+            <input
+              type="email"
+              [(ngModel)]="user.phone"
+              name="phone"
+              class="form-control"
+              placeholder="Enter Phone"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input
+              [(ngModel)]="user.password"
+              name="password"
+              type="password"
+              class="form-control"
+              id="exampleInputPassword1"
+              placeholder="Password"
+            />
+          </div>
+
+          <ng-container *ngIf="!loading; else loader">
+            <button
+              type="button"
+              (click)="RegisterUser()"
+              class="btn btn-primary"
+            >
+              Register
+            </button>
+            <a
+              [routerLink]="['/security/login']"
+              class="btn btn-primary float-right"
+            >
+              Login
+            </a>
+          </ng-container>
+          <ng-template #loader>
+            <mat-spinner [diameter]="30"></mat-spinner>
+          </ng-template>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row  p-3 justify-content-center">
+    <mat-card *ngIf="CurrentEntity">
+      <ng-container *ngIf="this.secureEntities.length">
+        <div class="col-sm-12 col-md-6 col-lg-3 pt-3">
+          <section class="example-section">
+            <mat-checkbox
+              class="example-margin"
+              color="primary"
+              [(ngModel)]="isAuthEntityPresent"
+              >Make Resourse Secure</mat-checkbox
+            >
+          </section>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-3" *ngIf="isAuthEntityPresent">
+          <mat-form-field>
+            <mat-label>Authenticate Entity</mat-label>
+            <mat-select
+              matTooltip="Select the entity for authentication"
+              [(value)]="authEntity"
+            >
+              <!-- <mat-option [value]="1">
+                        Typescript
+                      </mat-option> -->
+              <mat-option *ngFor="let item of secureEntities" [value]="item">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </ng-container>
+      <div class="p-3">
+        <button (click)="GetDownLoadUrl()" color="primary" mat-raised-button>
+          Save
+        </button>
+
+        <h5 class="mt-3">
+          Schema Of {{ CurrentEntity.name | titlecase }} Table
+        </h5>
+        <pre>{{ CurrentEntity.entitySchema | json }}</pre>
+      </div>
+    </mat-card>
+  </div>
+</div>

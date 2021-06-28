@@ -1,0 +1,221 @@
+<div class="container  ">
+  <div class="row justify-content-center">
+    <div class="col-12 mt-2">
+      <div class="row">
+        <div class="col-12 float-right">
+          <button
+            (click)="UpdateEntity()"
+            mat-raised-button
+            class="float-right"
+            color="primary"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+
+      <div class="container">
+        <form>
+          <ng-container
+            *ngIf="!property.hasRelationShip; else RelationTemplate"
+          >
+            <h6>General Properties</h6>
+            <hr />
+            <div class="form-group row mb-3">
+              <label for="inputName" class="col-sm-1-12 col-form-label"></label>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-label>Type</mat-label>
+                  <mat-select
+                    (selectionChange)="ChangeType($event.value)"
+                    [(value)]="property.type"
+                  >
+                    <mat-option *ngFor="let type of types" [value]="type">
+                      {{ type }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-sm-3 mx-5">
+                <mat-slide-toggle
+                  class="example-margin"
+                  [color]="'primary'"
+                  [checked]="property.isImage"
+                  (change)="onImageSlideToggle($event)"
+                >
+                  Is Image
+                </mat-slide-toggle>
+              </div>
+
+              <div class="col-sm-3 mx-5">
+                <mat-slide-toggle
+                  class="example-margin"
+                  [color]="'primary'"
+                  [checked]="property.isRichText"
+                  (change)="this.property.isRichText = $event.checked"
+                >
+                  Is Rich Text
+                </mat-slide-toggle>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #RelationTemplate>
+            <h6>Relation Properties</h6>
+            <hr />
+            <div class="form-group row mb-3">
+              <label for="inputName" class="col-sm-1-12 col-form-label"></label>
+              <div class="col-sm-3">
+                <mat-form-field>
+                  <mat-label>Select Entity</mat-label>
+                  <mat-select
+                    (selectionChange)="onrefEntityChange($event.value)"
+                    [(value)]="property.ref.entityName"
+                  >
+                    <mat-option
+                      *ngFor="let table of entities"
+                      [value]="table.name"
+                    >
+                      {{ table.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div *ngIf="property.ref.entityName" class="col-sm-3 mx-5">
+                <mat-form-field>
+                  <mat-label>Select Column To Display</mat-label>
+                  <mat-select [(value)]="property.ref.columnNameToDisplay">
+                    <mat-option *ngFor="let name of columns" [value]="name">
+                      {{ name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div *ngIf="property.ref.entityName" class="col-sm-3 mx-5">
+                <mat-form-field>
+                  <mat-label>Select Column To Store</mat-label>
+                  <mat-select [(value)]="property.ref.columnNameAsValue">
+                    <mat-option value="_id">
+                      Id
+                    </mat-option>
+                    <mat-option *ngFor="let name of columns" [value]="name">
+                      {{ name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </ng-template>
+
+          <h6>Schema Properties</h6>
+          <hr />
+          <div class="form-group row mb-5 ">
+            <label for="inputName" class="col-sm-1-12 col-form-label"></label>
+
+            <div
+              class="col-sm-3 p-1"
+              *ngFor="let item of property.commonProperty | keyvalue"
+            >
+              <mat-form-field *ngIf="item.value.type == 1">
+                <input
+                  matInput
+                  [(ngModel)]="property.commonProperty[item.key].default"
+                  [name]="item.key"
+                  placeholder=" {{ item.key | titlecase }}"
+                />
+              </mat-form-field>
+
+              <mat-slide-toggle
+                *ngIf="item.value.type == 0"
+                class="example-margin"
+                [color]="'primary'"
+                [checked]="property.commonProperty[item.key].default"
+                (change)="
+                  property.commonProperty[item.key].default = $event.checked
+                "
+              >
+                {{ item.key | titlecase }}
+              </mat-slide-toggle>
+            </div>
+          </div>
+          <h6>Index Properties</h6>
+          <hr />
+
+          <div class="form-group row mb-5 ">
+            <label for="inputName" class="col-sm-1-12 col-form-label"></label>
+
+            <div
+              class="col-sm-3 p-1"
+              *ngFor="let item of property.indexProperty | keyvalue"
+            >
+              <mat-form-field *ngIf="item.value.type == 1">
+                <input
+                  matInput
+                  [(ngModel)]="property.indexProperty[item.key].default"
+                  [name]="item.key"
+                  placeholder=" {{ item.key | titlecase }}"
+                />
+              </mat-form-field>
+              <mat-slide-toggle
+                *ngIf="item.value.type == 0"
+                class="example-margin"
+                [color]="'primary'"
+                [checked]="property.indexProperty[item.key].default"
+                (change)="
+                  property.indexProperty[item.key].default = $event.checked
+                "
+              >
+                {{ item.key | titlecase }}
+              </mat-slide-toggle>
+            </div>
+          </div>
+          <h6>{{ property.type }} Properties</h6>
+          <hr />
+
+          <div *ngIf="property.specificProperty" class="form-group row">
+            <label for="inputName" class="col-sm-1-12 col-form-label"></label>
+
+            <div
+              class="col-sm-4 p-1"
+              *ngFor="let item of property.specificProperty | keyvalue"
+            >
+              <mat-form-field *ngIf="item.value.type == 5">
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  [(ngModel)]="property.specificProperty[item.key].default"
+                  [name]="item.key"
+                  placeholder="Choose a date"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field *ngIf="item.value.type == 1">
+                <input
+                  matInput
+                  [(ngModel)]="property.specificProperty[item.key].default"
+                  [name]="item.key"
+                  placeholder=" {{ item.key | titlecase }}"
+                />
+              </mat-form-field>
+              <mat-slide-toggle
+                *ngIf="item.value.type == 0"
+                class="example-margin"
+                [color]="'primary'"
+                [checked]="property.specificProperty[item.key].default"
+                (change)="
+                  property.specificProperty[item.key].default = $event.checked
+                "
+              >
+                {{ item.key | titlecase }}
+              </mat-slide-toggle>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

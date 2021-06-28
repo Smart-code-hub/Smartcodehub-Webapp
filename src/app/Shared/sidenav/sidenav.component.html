@@ -1,0 +1,51 @@
+<mat-toolbar color="primary">
+  <div class="jusify-content-center">
+    <img src="https://blog.smartcodehub.com/content/images/2020/03/logo--1-.png" alt="" height="30" class="mx-3"
+      srcset="" />
+  </div>
+</mat-toolbar>
+
+<mat-nav-list>
+  <mat-list-item>
+    <a class="pl-2" matLine [routerLink]="['/']" routerLinkActive="active">
+      <span class="mb-2">Home</span></a>
+  </mat-list-item>
+</mat-nav-list>
+<mat-accordion multi="true" [displayMode]="'flat'">
+  <mat-expansion-panel *ngFor="let link of MenuItems" (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ link.name | titlecase }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+      <mat-list-item matLine [routerLink]="[item.path]" routerLinkActive="active" *ngFor="let item of link.items">
+        <a>{{ item.name }}</a>
+      </mat-list-item>
+    </mat-nav-list>
+   
+  </mat-expansion-panel>
+  <mat-nav-list style="width: 100%;">
+    <mat-list-item matLine routerLinkActive="active">
+      <a href="https://blog.smartcodehub.com" mat-raised-button>
+        <i style="color: #DA552F" class="fa fa-pencil mr-2" aria-hidden="true"></i>
+        Our Blog</a>
+    </mat-list-item>
+  </mat-nav-list>
+  <mat-nav-list style="width: 100%;">
+    <mat-list-item matLine routerLinkActive="active">
+      <a href="https://www.producthunt.com/posts/smartcodehub" mat-raised-button>
+        <i style="color: #DA552F" class="fa fa-product-hunt mr-2" aria-hidden="true"></i>
+        Upvote on producthunt</a>
+    </mat-list-item>
+  </mat-nav-list>
+  <mat-nav-list style="width: 100%;">
+    <mat-list-item matLine routerLinkActive="active">
+      <a class="" href="https://rzp.io/l/ntK8Tt2" mat-raised-button>
+        <i style="color: #DA552F" class="fa fa-money mr-2"></i>
+
+        Want to support</a>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-accordion>

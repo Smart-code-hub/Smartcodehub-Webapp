@@ -1,0 +1,54 @@
+<ng-container *ngIf="User$ | async as user">
+  <mat-sidenav-container *ngIf="user.token" class="sidenav-container">
+    <mat-sidenav
+      #drawer
+      class="sidenav"
+      fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="'over'"
+      [opened]="false"
+    >
+      <Smartcodehub-sidenav></Smartcodehub-sidenav>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()"
+        >
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+        <div class="jusify-content-center">
+          <img
+            src="https://blog.smartcodehub.com/content/images/2019/07/newlogo.png"
+            alt=""
+            height="30"
+            class="mx-3"
+            srcset=""
+          />
+          <span class="mt-2"> SmartCodeHub</span>
+        </div>
+        <span class="example-spacer"></span>
+
+        <button
+          mat-icon-button
+          class="more-button"
+          [matMenuTriggerFor]="menu"
+          aria-label="Toggle menu"
+        >
+          <mat-icon>face</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button (click)="LogOut()" mat-menu-item>LogOut</button>
+        </mat-menu>
+      </mat-toolbar>
+      <router-outlet *ngIf="user.token"></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <router-outlet *ngIf="!user.token"></router-outlet>
+</ng-container>

@@ -1,0 +1,143 @@
+<mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" [position]="'end'" mode="over">
+    <Smartcodehub-entity-detail
+      *ngIf="!showSecureEntityComponent"
+      [CurrentEntity]="CurrentEntity"
+    ></Smartcodehub-entity-detail>
+    <Smartcodehub-secure-entity
+      [drawer]="drawer"
+      *ngIf="showSecureEntityComponent"
+      [CurrentEntity]="CurrentEntity"
+    ></Smartcodehub-secure-entity>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <div class="container  " style="min-height: 90vh">
+      <div class="row justify-content-center">
+        <div class="col-11 mt-5">
+          <h4 class="mb-3 row">
+            <a
+              [routerLink]="['/entities/create']"
+              routerLinkActive="router-link-active"
+              mat-raised-button
+              class="float-right mx-2"
+              matTooltip="Create New Model"
+              color="primary"
+            >
+              Create New
+              <mat-icon aria-hidden="false" aria-label="Example home icon"
+                >add_circle_outline</mat-icon
+              >
+            </a>
+            <button
+              class=" mx-2"
+              (click)="DeleteinBulk()"
+              mat-raised-button
+              *ngIf="List.length"
+            >
+              <span class="mx-2">Delete Selected</span>
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button
+              (click)="GenerateResourses()"
+              mat-raised-button
+              *ngIf="List.length"
+            >
+              <span class="mr-2">Generate</span> <mat-icon>dashboard</mat-icon>
+            </button>
+            <a
+              color="primary"
+              *ngIf="DownloadUrl"
+              class="mx-2"
+              href="{{ DownloadUrl }}"
+              mat-icon-button
+              ><mat-icon>cloud_download</mat-icon></a
+            >
+          </h4>
+          <div class="row" *ngIf="entities$ | async as entities">
+            <div
+              class="col-10 my-2"
+              *ngFor="let item of entities; let i = index"
+            >
+              <div class="row">
+                <div class="col-1 mt-3">
+                  <mat-checkbox
+                    (change)="addToList($event, item)"
+                    color="primary"
+                  ></mat-checkbox>
+                </div>
+                <div class="col-11">
+                  <mat-accordion>
+                    <mat-expansion-panel
+                      (opened)="panelOpenState = true"
+                      (closed)="panelOpenState = false"
+                    >
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                          <b> {{ i + 1 }} {{ item.name | titlecase }}</b>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 p-2">
+                          <b>Properties : {{ GetPropertiesofEntity(item) }}</b>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 p-2">
+                          <b>Created On : {{ item.createdOn | date }}</b>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 p-3">
+                          <h6>Actions</h6>
+                          <div class="row">
+                            <a
+                              [routerLink]="['/entities/update', item._id]"
+                              routerLinkActive="router-link-active"
+                              mat-icon-button
+                              matTooltip="Edit this model"
+                              color="success"
+                            >
+                              <mat-icon>edit</mat-icon>
+                            </a>
+                            <button
+                              (click)="drawer.toggle()"
+                              (click)="showSecureEntityComponent = false"
+                              (click)="CurrentEntity = item"
+                              color="primary"
+                              matTooltip="Details"
+                              mat-icon-button
+                            >
+                              <mat-icon>info</mat-icon>
+                            </button>
+
+                            <button
+                              (click)="DeleteEntity(item)"
+                              mat-icon-button
+                              matTooltip="Delete this model"
+                              color="warn"
+                            >
+                              <mat-icon>delete</mat-icon>
+                            </button>
+                            <button
+                              *ngIf="CheckIfPasswordExists(item)"
+                              matTooltip="Create a Authentication controller from this model"
+                              mat-icon-button
+                              (click)="drawer.toggle()"
+                              (click)="showSecureEntityComponent = true"
+                              (click)="CurrentEntity = item"
+                              color="success"
+                            >
+                              <mat-icon>lock</mat-icon>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-drawer-container>

@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 my-2 text-right">
+      <button mat-raised-button color="primary" (click)="drawer.toggle()">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <div class="row  p-3 justify-content-center">
+    <mat-card *ngIf="CurrentEntity">
+      <button (click)="GetDownLoadUrl()" color="primary" mat-raised-button>
+        Save
+      </button>
+      <!-- <a
+        color="primary"
+        *ngIf="DownloadUrl"
+        class="mx-2"
+        href="{{ DownloadUrl }}"
+        mat-icon-button
+        ><mat-icon>cloud_download</mat-icon></a
+      > -->
+      <div class="my-3" *ngIf="CurrentEntity.authPayLoads">
+        <div class="row  m-1  ">
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Select Request Payloads
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon
+                    color="primary"
+                    matTooltip="Properties which user will send in payload"
+                    >help</mat-icon
+                  >
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <mat-form-field>
+                <mat-label>Request payloads</mat-label>
+                <mat-select
+                  [(ngModel)]="CurrentEntity.authPayLoads.reqPayLoads"
+                  multiple
+                >
+                  <mat-option
+                    *ngFor="let prop of CurrentEntity.properties"
+                    [value]="prop.name"
+                    >{{ prop.name }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </mat-expansion-panel>
+            <mat-expansion-panel
+              (opened)="panelOpenState = true"
+              (closed)="panelOpenState = false"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Select Token Payloads
+                </mat-panel-title>
+                <mat-panel-description>
+                  <mat-icon
+                    color="primary"
+                    matTooltip="Properties which will be encrypted in the token (JSON WEB TOKEN) which you will send back"
+                    >help</mat-icon
+                  >
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <mat-form-field>
+                <mat-label> Token payloads</mat-label>
+                <mat-select
+                  [(ngModel)]="CurrentEntity.authPayLoads.tokenPayloads"
+                  multiple
+                >
+                  <mat-option
+                    *ngFor="let prop of CurrentEntity.properties"
+                    [value]="prop.name"
+                    >{{ prop.name }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
